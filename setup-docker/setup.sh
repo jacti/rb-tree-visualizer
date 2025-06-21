@@ -32,11 +32,19 @@ for dir in "$VSCODE_SRC" "$TEST_SRC" "$VSCODE_DST" "$TEST_DST"; do
   fi
 done
 
-# 1) VSCode 설정 복사 + gdb path 패치
-echo "→ Updating $VSCODE_DST/launch.json and tasks.json"
-cp -f "$VSCODE_SRC/launch.json" "$VSCODE_DST/launch.json"
-# miDebuggerPath 교체
-sed -i 's#\("miDebuggerPath"\s*:\s*"\)[^"]*\("\)#\1'"$GDB_PATH"'\2#' "$VSCODE_DST/launch.json"
+# ── sed 인라인 옵션 분기 (macOS vs Linux) ──
+if [[ "$(uname)" == "Darwin" ]]; then
+  SED_OPTS=(-i "")
+else
+  SED_OPTS=(-i)
+fi
+
+# 1) VS Code 설정 복사 + gdb path 패치
+echo "→ Updating VS Code settings in $DST_VSCODE"
+cp -f "$VSCODE_SRC/launch.json" "$DST_VSCODE/launch.json"
+sed "${SED_OPTS[@]}" \
+  -e "s#\(\"miDebuggerPath\"[[:space:]]*:[[:space:]]*\)\"[^\"]*\"\(#\1\"${GDB_PATH}\"#g" \
+  "$DST_VSCODE/launch.json"
 cp -f "$VSCODE_SRC/tasks.json"  "$VSCODE_DST/tasks.json"
 
 # 2) test 파일 복사
