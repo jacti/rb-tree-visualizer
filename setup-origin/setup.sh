@@ -46,12 +46,13 @@ for dir in \
   fi
 done
 
-# ── sed 인라인 옵션 분기 (macOS vs Linux) ──
+# macOS vs Linux 인라인 편집 옵션 분기
 if [[ "$(uname)" == "Darwin" ]]; then
-  SED_OPTS=(-i "")
+  SED_INLINE=(-i "")
 else
-  SED_OPTS=(-i)
+  SED_INLINE=(-i)
 fi
+
 
 # ── 1) 루트 Makefile 복사 ──
 echo "→ Copying Makefile to $DST_ROOT/Makefile"
@@ -61,12 +62,15 @@ cp -f "$ORIGIN_ROOT/Makefile" "$DST_ROOT/Makefile"
 echo "→ Copying src/Makefile to $DST_SRC/Makefile"
 cp -f "$SRC_SRC/Makefile" "$DST_SRC/Makefile"
 
-# ── 3) VS Code 설정 복사 + gdb path 패치 ──
+# 3) VS Code 설정 복사 + gdb path 패치
 echo "→ Updating VS Code settings in $DST_VSCODE"
 cp -f "$VSCODE_SRC/launch.json" "$DST_VSCODE/launch.json"
-sed "${SED_OPTS[@]}" \
-  -e "s#\(\"miDebuggerPath\"[[:space:]]*:[[:space:]]*\)\"[^\"]*\"\(#\1\"${GDB_PATH}\"#g" \
+
+# 패치: "miDebuggerPath": "<OLD>" → "miDebuggerPath": "<GDB_PATH>"
+sed "${SED_INLINE[@]}" -E \
+  "s#(\"miDebuggerPath\"[[:space:]]*:[[:space:]]*\")[^\"]*\"#\1${GDB_PATH}\"#" \
   "$DST_VSCODE/launch.json"
+
 cp -f "$VSCODE_SRC/tasks.json"  "$DST_VSCODE/tasks.json"
 
 # ── 4) test 파일 복사 ──
