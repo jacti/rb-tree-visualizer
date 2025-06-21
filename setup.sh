@@ -25,7 +25,7 @@ else
 fi
 # 절대 경로로 변환
 PRJ_ROOT="$(cd "$PRJ_ROOT" && pwd)"
-\ nif [[ "$IS_DOCKER" =~ ^[Yy]$ ]]; then
+if [[ "$IS_DOCKER" =~ ^[Yy]$ ]]; then
   # 3) rbtree lab 폴더 이름 (Docker 프로젝트인 경우)
   read -rp "Enter rbtree lab folder name [default: rbtree_lab]: " INPUT_RBTREE
   if [[ -z "$INPUT_RBTREE" ]]; then
