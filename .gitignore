@@ -82,3 +82,6 @@ Temporary Items
 
 # vscode
 .vscode/
+
+#CLion
+.idea
