@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "test",
+      "label": "build-test",
       "type": "shell",
-      "command": "cd ${workspaceFolder} && make clean && make -C test",
+      "command": "cd ${workspaceFolder} && make clean && make -C build-test",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -12,9 +12,9 @@
       "problemMatcher": []
     },
     {
-      "label": "visualize",
+      "label": "build-visualize",
       "type": "shell",
-      "command": "cd ${workspaceFolder} && make clean && make visualize",
+      "command": "cd ${workspaceFolder} && make clean && make build-visualize",
       "group": {
         "kind": "build",
         "isDefault": true

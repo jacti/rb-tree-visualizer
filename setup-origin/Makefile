@@ -12,14 +12,18 @@ help: ## Show available targets
 build: $(OUT_DIR) ## Build all executables
 	$(MAKE) -C src OUT_DIR=$(OUT_DIR)
 
+build-%: ## Only Build %
+	@echo "→ Build $*"
+	$(MAKE) -C test OUT_DIR=$(OUT_DIR) SRC_DIR=$(SRC_DIR) $*
+
 test: $(OUT_DIR) ## Run tests on rbtree implementation
-	$(MAKE) -C test OUT_DIR=$(OUT_DIR) test
+	$(MAKE) -C test OUT_DIR=$(OUT_DIR) SRC_DIR=$(SRC_DIR) run-test check-test
 
 rebuild-test: clean $(OUT_DIR) ## Clean and rebuild test-rbtree for debugging
 	$(MAKE) -C test OUT_DIR=$(OUT_DIR) all
 
 visualize: $(OUT_DIR) ## Visualize RBTree -> check test/visualize-main.c
-	$(MAKE) -C test OUT_DIR=$(OUT_DIR) SRC_DIR=$(SRC_DIR) visualize
+	$(MAKE) -C test OUT_DIR=$(OUT_DIR) SRC_DIR=$(SRC_DIR) run-visualize
 
 clean: ## Clean build environment
 	$(MAKE) -C src OUT_DIR=$(OUT_DIR) clean

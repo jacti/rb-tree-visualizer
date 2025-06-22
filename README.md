@@ -1,4 +1,4 @@
-# 레드블랙 트리 시각화 v.3.1.0
+# 레드블랙 트리 시각화 v.3.1.1
 
 > 안녕 친구들~ 편의성패치 아저씨야
 > 
@@ -150,6 +150,10 @@ void rbtree_to_svg_specific(const node_t *root, const node_t *nil, const char *f
 ![image](https://github.com/user-attachments/assets/f8bd7442-6807-4a34-8f52-780079f964c0)
 
 ## 업데이트 로그
+
+- v3.1.1
+    - Task 가 build 이후 run 까지 하는 버그 수정
+    
 - v3.1.0
     - Docker, 비 Docker 프로젝트 Makefile 구조 통합
     - Docker 프로젝트도 out/ 안에 모든 .o, 실행 파일이 모이도록 수정

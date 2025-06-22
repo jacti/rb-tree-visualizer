@@ -16,15 +16,26 @@ OBJS = $(OBJ_DIR)/test-rbtree.o $(OBJ_DIR)/rbtree.o
 VISUALIZE = $(BIN_DIR)/visualize_rbtree
 VISUAL_OBJS = $(OBJ_DIR)/visualize-main.o $(OBJ_DIR)/rbtree_visualizer.o $(OBJ_DIR)/rbtree.o
 
-all: $(TARGET) $(VISUALIZE)
+# 1) 기본 빌드 타겟
+all: test visualize
 
-visualize: $(VISUALIZE)
-	@cd $(OUT_DIR) && ./bin/$(notdir $(VISUALIZE))
-# valgrind $(visualize)
-
+# --- build-only 타겟 ---
 test: $(TARGET)
-	$(TARGET)
-	valgrind $(TARGET)
+visualize: $(VISUALIZE)
+
+# --- run-… 패턴룰 (build-only 타겟 의존 + 실행) ---
+# $* 이 “test” 또는 “visualize” 로 치환됩니다.
+EXEC_test      := $(notdir $(TARGET))
+EXEC_visualize := $(notdir $(VISUALIZE))
+
+run-%: % 
+	@echo "→ Running $*"
+	@cd $(OUT_DIR) && ./bin/$(EXEC_$*)
+
+check-%: %
+	@echo "→ Checking $* under Valgrind"
+	@cd $(OUT_DIR) && \
+		valgrind --leak-check=full --show-leak-kinds=all ./bin/$(EXEC_$*)
 
 # 실행 파일 생성
 $(TARGET): $(OBJS)
