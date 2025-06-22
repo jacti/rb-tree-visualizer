@@ -1,4 +1,4 @@
-# 레드블랙 트리 시각화 v.2.1.0
+# 레드블랙 트리 시각화 v.3.0.0
 
 > 안녕 친구들~ 편의성패치 아저씨야
 > 
@@ -10,6 +10,12 @@
 > 
 
 rbtree *t를 입력하면 현재 트리 모습을 콘솔 출력 또는 svg 파일로 저장하는 코드입니다.
+
+# 공지
+
+이전 버전에서 업데이트 할 유저들도 repo를 pull 한 후 ./setup.sh를 한번 더 실행해 주시기 바랍니다.
+
+- **주의** 업데이트 시 이전 visualize-rbtree.c 가 자동으로 삭제 됩니다. main에 본인만의 테스트 코드를 짜놓았다면 미리 복사해두길 바랍니다.
 
 # 사용 준비
 
@@ -35,7 +41,7 @@ rbtree *t를 입력하면 현재 트리 모습을 콘솔 출력 또는 svg 파�
 
 ## 사용 법
 
-visualize-rbtree.c 파일로 이동합니다.
+visualize-main.c 파일로 이동합니다.
 
 main 함수 안에 테스트할 상황을 구현해주세요.
 
@@ -109,6 +115,8 @@ void print_tree_horizontal(const node_t *node, const node_t *nil, int space);
 
 ### svg 이미지 저장
 
+- 일반 트리 이미지 생성
+
 ```c
 /*
 rbtree svg 만드는 함수
@@ -119,9 +127,29 @@ void rbtree_to_svg(const node_t *root, const node_t *nil, const char *filename);
 
 - 출력 예시
 
-<figure class="half">  <a href="link"><img src="https://github.com/user-attachments/assets/88e61619-9032-41ac-9bd9-f237939936c3"></a>  <a href="link"><img src="https://github.com/user-attachments/assets/4d76bf6c-92bd-4315-a0a9-d47571516112"></a> </figure>
+<figure class="half">  <a href="link"><img src="https://github.com/user-attachments/assets/9bc535b7-ab8b-4b01-9a63-8a7daccaa74e"></a>  <a href="link"><img src="https://github.com/user-attachments/assets/18a785d6-9b41-479b-8623-b2254cc37b59"></a> </figure>
+
+- 상세 (포인터 정보 포함) 노드 이미지 생성
+
+```c
+/*
+상세 정보 svg 만드는 함수
+입력 : 출력을 시작할 루트 , nil, 파일 문자열 포인터
+*/
+void rbtree_to_svg_specific(const node_t *root, const node_t *nil, const char *filename);
+```
+
+- 출력 예시
+
+![image](https://github.com/user-attachments/assets/f8bd7442-6807-4a34-8f52-780079f964c0)
 
 ## 업데이트 로그
+- v3.0.0
+    - NIL node 정보 추가
+    - 상세 이미지 생성 함수 추가
+    - visualizer 헤더파일 추가
+    - test main과 함수 정의부 코드 분리
+    - 버그 수정
 
 - v2.1.0
     - [git hub repo](https://github.com/jacti/rb-tree-visualizer.git) 생성
