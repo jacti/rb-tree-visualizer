@@ -11,6 +11,11 @@
 #define ANSI_RESET   "\x1b[0m" //디폴트 색
 #define ANSI_BOLD    "\x1b[1m" //굵은 폰트
 
+// 이미지 크기
+#define MIN_WIDTH           300
+#define NIL_TABLE_WIDTH     180
+#define NIL_TABLE_HEIGHT    80
+#define NIL_TABLE_PADDING    20
 
 // 트리 높이 구하기
 int get_tree_height(const node_t *node, const node_t *nil) {
@@ -23,17 +28,20 @@ int get_tree_height(const node_t *node, const node_t *nil) {
 void draw_nil_info_svg(FILE *f, const node_t *nil, int x, int y) {
 
     fprintf(f, "  <!-- NIL Node Information -->\n");
-    fprintf(f, "  <rect x=\"%d\" y=\"%d\" width=\"180\" height=\"80\" fill=\"lightgray\" "
-               "stroke=\"black\" stroke-width=\"1\" rx=\"5\" />\n", x, y);
+    fprintf(f, "  <rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"lightgray\" "
+               "stroke=\"black\" stroke-width=\"1\" rx=\"5\" />\n", NIL_TABLE_PADDING, NIL_TABLE_PADDING, NIL_TABLE_WIDTH, NIL_TABLE_HEIGHT);
 
     fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"14px\" font-weight=\"bold\" fill=\"black\">NIL Node Info:</text>\n",
             x + 10, y + 20);
-    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"black\">Parent: %p</text>\n",
-            x + 10, y + 35, (void*)nil->parent);
-    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"black\">Left: %p</text>\n",
-            x + 10, y + 50, (void*)nil->left);
-    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"black\">Right: %p</text>\n",
-            x + 10, y + 65, (void*)nil->right);
+    char *font_color = nil != nil->parent ? "red" : "black";
+    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"%s\">Parent: %p</text>\n",
+            x + 10, y + 35, font_color, (void*)nil->parent);
+    font_color = nil != nil->left ? "red" : "black";
+    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"%s\">Left: %p</text>\n",
+            x + 10, y + 50, font_color, (void*)nil->left);
+    font_color = nil != nil->right ? "red" : "black";
+    fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"12px\" fill=\"%s\">Right: %p</text>\n",
+            x + 10, y + 65, font_color, (void*)nil->right);
 }
 
 // NIL 그리기
@@ -50,25 +58,23 @@ void draw_nil_leaf_svg(FILE *f, int x, int y, int radius) {
 }
 
 void draw_node_svg(FILE *f, const node_t *node, const node_t *nil,
-                   int x, int depth, int h_offset,
+                   int x, int y, int depth, int h_offset,
                    int v_spacing, int radius){
     if (node == nil) return;
-
-    int y = v_spacing + depth * v_spacing;
 
     // 왼쪽에 nil 아니면 그리기
     if (node->left != nil) {
         int child_x = x - h_offset;
-        int child_y = v_spacing + (depth + 1) * v_spacing;
+        int child_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"black\" stroke-width=\"2\" />\n",
                 x, y, child_x, child_y);
-        draw_node_svg(f, node->left, nil, child_x, depth + 1, h_offset / 2, v_spacing, radius);
+        draw_node_svg(f, node->left, nil, child_x, child_y, depth + 1, h_offset / 2, v_spacing, radius);
     }
     // nil 그리기
     else {
         int nil_x = x - h_offset;
-        int nil_y = v_spacing + (depth + 1) * v_spacing;
+        int nil_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"gray\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n",
                 x, y, nil_x, nil_y);
@@ -78,14 +84,14 @@ void draw_node_svg(FILE *f, const node_t *node, const node_t *nil,
 
     if (node->right != nil) {
         int child_x = x + h_offset;
-        int child_y = v_spacing + (depth + 1) * v_spacing;
+        int child_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"black\" stroke-width=\"2\" />\n",
                 x, y, child_x, child_y);
-        draw_node_svg(f, node->right, nil, child_x, depth + 1, h_offset / 2, v_spacing, radius);
+        draw_node_svg(f, node->right, nil, child_x, child_y, depth + 1, h_offset / 2, v_spacing, radius);
     } else {
         int nil_x = x + h_offset;
-        int nil_y = v_spacing + (depth + 1) * v_spacing;
+        int nil_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"gray\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n",
                 x, y, nil_x, nil_y);
@@ -105,29 +111,27 @@ void draw_node_svg(FILE *f, const node_t *node, const node_t *nil,
 
 
 void draw_node_detailed_svg(FILE *f, const node_t *node, const node_t *nil,
-                            int x, int depth, int h_offset,
+                            int x, int y, int depth, int h_offset,
                             int v_spacing, int box_width, int box_height) {
     if (node == nil) return;
-
-    int y = v_spacing + depth * v_spacing;
 
     // 자식 노드들 먼저
     if (node->left != nil) {
         int child_x = x - h_offset;
-        int child_y = v_spacing + (depth + 1) * v_spacing;
+        int child_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"black\" stroke-width=\"1\" />\n",
                 x, y + box_height/2, child_x, child_y - box_height/2);
-        draw_node_detailed_svg(f, node->left, nil, child_x, depth + 1, h_offset / 2, v_spacing, box_width, box_height);
+        draw_node_detailed_svg(f, node->left, nil, child_x, child_y, depth + 1, h_offset / 2, v_spacing, box_width, box_height);
     }
 
     if (node->right != nil) {
         int child_x = x + h_offset;
-        int child_y = v_spacing + (depth + 1) * v_spacing;
+        int child_y = y + v_spacing;
         fprintf(f, "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" "
                    "stroke=\"black\" stroke-width=\"1\" />\n",
                 x, y + box_height/2, child_x, child_y - box_height/2);
-        draw_node_detailed_svg(f, node->right, nil, child_x, depth + 1, h_offset / 2, v_spacing, box_width, box_height);
+        draw_node_detailed_svg(f, node->right, nil, child_x, child_y, depth + 1, h_offset / 2, v_spacing, box_width, box_height);
     }
 
     // 노드  그리기
@@ -196,7 +200,12 @@ void rbtree_to_svg_specific(const node_t *root, const node_t *nil, const char *f
     int root_x = width / 2;
     int initial_offset = width / 4;
 
-    draw_node_detailed_svg(f, root, nil, root_x, 0, initial_offset, v_spacing, box_width, box_height);
+     int root_y = v_spacing;
+    if (root_x < NIL_TABLE_WIDTH + 2 * NIL_TABLE_PADDING){
+        root_y += NIL_TABLE_HEIGHT;
+    }
+
+    draw_node_detailed_svg(f, root, nil, root_x, root_y, 0, initial_offset, v_spacing, box_width, box_height);
 
     fprintf(f, "</svg>\n");
     fclose(f);
@@ -214,6 +223,7 @@ void rbtree_to_svg(const node_t *root, const node_t *nil, const char *filename) 
     int v_spacing = 80;
     int radius = 20;
     int width = (1 << height) * radius * 2;
+    width = MIN_WIDTH > width ? MIN_WIDTH : width;
     int height_px = v_spacing * (height + 2) + 80;
 
     FILE *f = fopen(filename, "w");
@@ -230,7 +240,12 @@ void rbtree_to_svg(const node_t *root, const node_t *nil, const char *filename) 
     int root_x = width / 2;
     int initial_offset = width / 4;
 
-    draw_node_svg(f, root, nil, root_x, 0, initial_offset, v_spacing, radius);
+    int root_y = v_spacing;
+    if (root_x < NIL_TABLE_WIDTH + 2 * NIL_TABLE_PADDING){
+        root_y += NIL_TABLE_HEIGHT;
+    }
+
+    draw_node_svg(f, root, nil, root_x, root_y, 0, initial_offset, v_spacing, radius);
 
     fprintf(f, "</svg>\n");
     fclose(f);
@@ -255,7 +270,7 @@ void print_spaces(int count) {
     }
 }
 
-void store_level_nodes(const node_t *node, const node_t *nil, node_t **arr, int idx, int level, int target_level) {
+void store_level_nodes(const node_t *node, const node_t *nil, const node_t **arr, int idx, int level, int target_level) {
     if (level == target_level) {
         arr[idx] = (node == nil) ? NULL : node;
         return;
@@ -285,7 +300,7 @@ void print_tree_vertical(const node_t *node, const node_t *nil) {
         int nodes_in_level = 1 << level;
         node_t **level_nodes = (node_t **)calloc(nodes_in_level, sizeof(node_t *));
 
-        store_level_nodes(node, nil, level_nodes, 0, 0, level);
+        store_level_nodes(node, nil, (const node_t **)level_nodes, 0, 0, level);
 
         int bottom_width = 1 << (height - 1);
         int spacing = (bottom_width * 4) / nodes_in_level;
