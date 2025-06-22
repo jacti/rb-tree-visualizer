@@ -57,7 +57,11 @@ void draw_nil_leaf_svg(FILE *f, int x, int y, int radius) {
                "stroke=\"black\" stroke-width=\"1\" />\n",
             x - nil_size, y - nil_size, nil_size * 2, nil_size * 2);
 
-    char *txt = SENTINEL? "NIL" : "NULL";
+    #ifndef SENTINEL
+        char *txt = "NULL";
+    #else
+        char *txt = "NIL";
+    #endif
     fprintf(f, "  <text x=\"%d\" y=\"%d\" text-anchor=\"middle\" dy=\".3em\" font-size=\"%dpx\" "
                "fill=\"white\" font-weight=\"bold\">%s</text>\n",
             x, y, nil_size,txt);
