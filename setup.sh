@@ -37,9 +37,7 @@ if [[ "$IS_DOCKER" =~ ^[Yy]$ ]]; then
     echo "No input provided. Using default: $RBTREE_DIR"
   fi
 
-  chmod +x "$SCRIPT_DIR/setup-docker/setup.sh"
-  "$SCRIPT_DIR/setup-docker/setup.sh" "$PRJ_ROOT" "$RBTREE_DIR" "$GDB_PATH"
+  "$SCRIPT_DIR/setup-docker/docker-env-setup.sh" "$PRJ_ROOT" "$RBTREE_DIR" "$GDB_PATH"
 else
-  chmod +x "$SCRIPT_DIR/setup-origin/setup.sh"
-  "$SCRIPT_DIR/setup-origin/setup.sh" "$PRJ_ROOT" "$GDB_PATH"
+  "$SCRIPT_DIR/setup-origin/origin-env-setup.sh" "$PRJ_ROOT" "$GDB_PATH"
 fi

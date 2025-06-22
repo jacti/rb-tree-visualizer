@@ -16,19 +16,21 @@ BIN_DIR ?= $(CURDIR)
 OBJ_DIR ?= $(CURDIR)
 
 TARGET = $(BIN_DIR)/test-rbtree
-OBJS = $(OBJ_DIR)/test-rbtree.o $(OBJ_DIR)/rbtree.o
+OBJS = $(OBJ_DIR)/test-rbtree.o $(SRC_OBJ_DIR)/rbtree.o
 
 # VISUALIZE 등록
 VISUALIZE = $(BIN_DIR)/visualize_rbtree
-VISUAL_OBJS = $(OBJ_DIR)/visualize_rbtree.o $(SRC_OBJ_DIR)/rbtree.o
+VISUAL_OBJS = $(OBJ_DIR)/visualize-main.o $(OBJ_DIR)/rbtree_visualizer.o $(SRC_OBJ_DIR)/rbtree.o
 
 all: $(TARGET) $(VISUALIZE)
 
 visualize: $(VISUALIZE)
+	# $(VISUALIZE)
+	# valgrind $(visualize)
 
 test: $(TARGET)
 	$(TARGET)
-	valgrind ./$(TARGET)
+	valgrind $(TARGET)
 
 # 실행 파일 생성
 $(TARGET): $(OBJS)
@@ -40,15 +42,19 @@ $(VISUALIZE): $(VISUAL_OBJS)
 	@mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# visualize 목적 파일 생성
-$(OBJ_DIR)/visualize_rbtree.o: visualize-rbtree.c
-	@mkdir -p $(OBJ_DIR)
+# 1) rbtree.o 만 src/Makefile 호출로 빌드
+$(OBJ_DIR)/rbtree.o:
+	@$(MAKE) -C $(SRC_DIR) \
+	  OBJ_DIR=$(SRC_OBJ_DIR) BIN_DIR=$(BIN_DIR) \
+	  rbtree.o
+	@mkdir -p $(@D)
+	@cp $(SRC_OBJ_DIR)/rbtree.o $@
+
+# 2) 그 외 .c → .o 변환을 단일 패턴룰로 처리
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# 테스트용 목적 파일
-$(OBJ_DIR)/test-rbtree.o: test-rbtree.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
 
 # src 쪽 rbtree.o가 없다면 src/Makefile을 통해 빌드
 $(OBJ_DIR)/rbtree.o:
