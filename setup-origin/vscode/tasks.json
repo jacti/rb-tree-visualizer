@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "rebuild-test",
+      "label": "test",
       "type": "shell",
-      "command": "make rebuild-test",
+      "command": "cd ${workspaceFolder} && make clean && make -C test",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -14,7 +14,7 @@
     {
       "label": "visualize",
       "type": "shell",
-      "command": "make visualize",
+      "command": "cd ${workspaceFolder} && make clean && make visualize",
       "group": {
         "kind": "build",
         "isDefault": true

@@ -53,24 +53,28 @@ int main()
     {
         rbtree_insert(t, i);
         // 파일 이름 for 문으로 생성
-        sprintf(img_file_buffer, "out/imgs/serial_i_%d.svg", i);
-        printf("\n %d 노드 삽입 \n", i);
-        print_tree_horizontal(t->root,t->nil, 0); //콘솔에 수평으로 출력하는 함수
+        sprintf(img_file_buffer, "imgs/serial_%d.svg", i);
+        printf("\n--- %d번째 노드 삽입 ---\n", i+1);
+        // print_tree_horizontal(t->root,t->nil, 0); //콘솔에 수평으로 출력하는 함수
         print_tree_vertical(t->root,t->nil); //콘솔에 수직으로 출력하는 함수
-        rbtree_to_svg(t->root,t->nil,img_file_buffer);
+        rbtree_to_svg(t->root,t->nil,img_file_buffer);  //이미지 출력 하는 함수
+        // rbtree_to_svg_specific(t->root,t->nil,img_file_buffer);  // 상세 이미지 출력 하는 함수
     }
 
     delete_rbtree(t);
     t = new_rbtree();
     // 10개의 랜덤 원소를 넣는 테스트
+    // 랜덤 seed 입력
+    srand((unsigned)time(NULL));
     for (int i = 0; i < 5; i++)
     {
         rbtree_insert(t, rand() % 100);
         // 파일 이름 for 문으로 생성
-        sprintf(img_file_buffer, "out/imgs/rand_%d.svg", i);
-        printf("\n %d 노드 삽입 \n", i);
-        print_tree_horizontal(t->root,t->nil, 0); //콘솔에 수평으로 출력하는 함수
+        sprintf(img_file_buffer, "imgs/rand_%d.svg", i);
+        printf("\n--- %d번째 노드 삽입 ---\n", i+1);
+        // print_tree_horizontal(t->root,t->nil, 0); //콘솔에 수평으로 출력하는 함수
         print_tree_vertical(t->root,t->nil); //콘솔에 수직으로 출력하는 함수
-        rbtree_to_svg(t->root,t->nil,img_file_buffer);
+        rbtree_to_svg(t->root,t->nil,img_file_buffer);  //이미지 출력 하는 함수
+        // rbtree_to_svg_specific(t->root,t->nil,img_file_buffer);  // 상세 이미지 출력 하는 함수
     }
 }

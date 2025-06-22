@@ -8,12 +8,12 @@
       "program": "${workspaceFolder}/out/bin/test-rbtree",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/out",
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
-      "preLaunchTask": "rebuild-test",
+      "preLaunchTask": "test",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -29,7 +29,7 @@
       "program": "${workspaceFolder}/out/bin/visualize_rbtree",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/out",
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
