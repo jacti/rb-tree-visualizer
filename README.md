@@ -1,4 +1,4 @@
-# 레드블랙 트리 시각화 v.3.0.0
+# 레드블랙 트리 시각화 v.3.1.1
 
 > 안녕 친구들~ 편의성패치 아저씨야
 > 
@@ -12,6 +12,12 @@
 rbtree *t를 입력하면 현재 트리 모습을 콘솔 출력 또는 svg 파일로 저장하는 코드입니다.
 
 # 공지
+
+<p>${\color{#DD6565}이전\ 버전\ (v 3.0.0\ 이하)에서\ make\ test\ 함수가\ 실행이\ 안되는\ 버그가\ 있었습니다.}$</p>
+
+<p color="red"></p>
+
+**현 버전으로 업데이트하여 해결할 수 있습니다.**
 
 이전 버전에서 업데이트 할 유저들도 repo를 pull 한 후 ./setup.sh를 한번 더 실행해 주시기 바랍니다.
 
@@ -144,11 +150,24 @@ void rbtree_to_svg_specific(const node_t *root, const node_t *nil, const char *f
 ![image](https://github.com/user-attachments/assets/f8bd7442-6807-4a34-8f52-780079f964c0)
 
 ## 업데이트 로그
+- v3.1.1
+    - Task 가 build 이후 run 까지 하는 버그 수정
+    
+- v3.1.0
+    - Docker, 비 Docker 프로젝트 Makefile 구조 통합
+    - Docker 프로젝트도 out/ 안에 모든 .o, 실행 파일이 모이도록 수정
+    - 모든 생성 이미지가 out/ 안에 생길 수 있도록 수정
+    - <font color="red">make test 동작하지 않던 버그 수정</font>
+    
 - v3.0.0
-    - NIL node 정보 추가
+    > 아래 기능을 개발한 사람 [@saroro1](https://github.com/saroro1)
+    > 
+    - <font color="red">NIL node 정보 추가</font>
     - 상세 이미지 생성 함수 추가
     - visualizer 헤더파일 추가
     - test main과 함수 정의부 코드 분리
+ 
+      
     - 버그 수정
 
 - v2.1.0
