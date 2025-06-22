@@ -16,7 +16,7 @@ BIN_DIR ?= $(CURDIR)
 OBJ_DIR ?= $(CURDIR)
 
 TARGET = $(BIN_DIR)/test-rbtree
-OBJS = $(OBJ_DIR)/test-rbtree.o $(OBJ_DIR)/rbtree.o
+OBJS = $(OBJ_DIR)/test-rbtree.o $(SRC_OBJ_DIR)/rbtree.o
 
 # VISUALIZE 등록
 VISUALIZE = $(BIN_DIR)/visualize_rbtree
@@ -25,10 +25,12 @@ VISUAL_OBJS = $(OBJ_DIR)/visualize_rbtree.o $(SRC_OBJ_DIR)/rbtree.o
 all: $(TARGET) $(VISUALIZE)
 
 visualize: $(VISUALIZE)
+	# $(VISUALIZE)
+	# valgrind $(visualize)
 
 test: $(TARGET)
 	$(TARGET)
-	valgrind ./$(TARGET)
+	valgrind $(TARGET)
 
 # 실행 파일 생성
 $(TARGET): $(OBJS)

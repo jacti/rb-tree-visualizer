@@ -1,7 +1,7 @@
 #ifndef RBTREE_VISUALIZER_H
 #define RBTREE_VISUALIZER_H
 
-#include "rbtree.h"
+#include <rbtree.h>
 
 /* 기본 SVG 생성*/
 void rbtree_to_svg(const node_t *root, const node_t *nil, const char *filename);
