@@ -13,7 +13,7 @@
       "externalConsole": false,
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
-      "preLaunchTask": "test",
+      "preLaunchTask": "build-test",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -34,7 +34,7 @@
       "externalConsole": false,
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
-      "preLaunchTask": "visualize",
+      "preLaunchTask": "build-visualize",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
