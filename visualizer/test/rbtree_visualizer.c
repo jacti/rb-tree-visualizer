@@ -30,7 +30,12 @@ void draw_nil_info_svg(FILE *f, const node_t *nil, int x, int y) {
     fprintf(f, "  <!-- NIL Node Information -->\n");
     fprintf(f, "  <rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"lightgray\" "
                "stroke=\"black\" stroke-width=\"1\" rx=\"5\" />\n", NIL_TABLE_PADDING, NIL_TABLE_PADDING, NIL_TABLE_WIDTH, NIL_TABLE_HEIGHT);
-
+    
+    if(nil == NULL){
+        fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"14px\" font-weight=\"bold\" fill=\"black\">Do not use NIL ptr</text>\n",
+            x + 10, y + 20);
+        return;
+    }
     fprintf(f, "  <text x=\"%d\" y=\"%d\" font-size=\"14px\" font-weight=\"bold\" fill=\"black\">NIL Node Info:</text>\n",
             x + 10, y + 20);
     char *font_color = nil != nil->parent ? "red" : "black";
@@ -52,9 +57,10 @@ void draw_nil_leaf_svg(FILE *f, int x, int y, int radius) {
                "stroke=\"black\" stroke-width=\"1\" />\n",
             x - nil_size, y - nil_size, nil_size * 2, nil_size * 2);
 
+    char *txt = SENTINEL? "NIL" : "NULL";
     fprintf(f, "  <text x=\"%d\" y=\"%d\" text-anchor=\"middle\" dy=\".3em\" font-size=\"%dpx\" "
-               "fill=\"white\" font-weight=\"bold\">NIL</text>\n",
-            x, y, nil_size);
+               "fill=\"white\" font-weight=\"bold\">%s</text>\n",
+            x, y, nil_size,txt);
 }
 
 void draw_node_svg(FILE *f, const node_t *node, const node_t *nil,
