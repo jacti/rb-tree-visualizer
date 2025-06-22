@@ -2,8 +2,9 @@ CC = gcc
 CFLAGS = -Wall -g
 
 SRC_DIR = .
-OBJ_DIR ?= ../out/obj
-BIN_DIR ?= ../out/bin
+OUT_DIR ?= ../out
+OBJ_DIR = $(OUT_DIR)/obj
+BIN_DIR = $(OUT_DIR)/bin
 
 OBJS = $(OBJ_DIR)/driver.o $(OBJ_DIR)/rbtree.o $(OBJ_DIR)/visualize_rbtree.o
 TARGET = $(BIN_DIR)/driver
