@@ -32,17 +32,15 @@ VSCODE_SRC="$SCRIPT_DIR/vscode"
 TEST_SRC="$PLUGIN_ROOT/visualizer/test"
 
 # ── 대상 디렉터리 (DST_* 형식) ──
-ROOT_DST="$PRJ_ROOT_DIR"
 
 # src와 test 모두 RBTREE_DIR 유무에 따라 분기
 if [[ -n "$RBTREE_DIR" ]]; then
-  SRC_DST="$PRJ_ROOT_DIR/$RBTREE_DIR/src"
-  TEST_DST="$PRJ_ROOT_DIR/$RBTREE_DIR/test"
+  RB_ROOT_DST="$PRJ_ROOT_DIR/$RBTREE_DIR"
 else
-  SRC_DST="$PRJ_ROOT_DIR/src"
-  TEST_DST="$PRJ_ROOT_DIR/test"
+  RB_ROOT_DST="$PRJ_ROOT_DIR"
 fi
-
+SRC_DST="$RB_ROOT_DST/src"
+TEST_DST="$RB_ROOT_DST/test"
 VSCODE_DST="$PRJ_ROOT_DIR/.vscode"
 
 # ── 경로 유효성 검사 ──
@@ -52,7 +50,7 @@ for path in \
   "$VSCODE_SRC/launch.json" \
   "$VSCODE_SRC/tasks.json" \
   "$TEST_SRC" \
-  "$ROOT_DST" \
+  "$RB_ROOT_DST" \
   "$SRC_DST" \
   "$VSCODE_DST" \
   "$TEST_DST"; do
@@ -70,8 +68,8 @@ else
 fi
 
 # ── 1) 루트 Makefile 복사 ──
-echo "→ Copying Makefile to $ROOT_DST/Makefile"
-cp -f "$ORIGIN_ROOT/Makefile" "$ROOT_DST/Makefile"
+echo "→ Copying Makefile to $RB_ROOT_DST/Makefile"
+cp -f "$ORIGIN_ROOT/Makefile" "$RB_ROOT_DST/Makefile"
 
 # ── 2) src/Makefile 복사 ──
 echo "→ Copying src/Makefile to $SRC_DST/Makefile"

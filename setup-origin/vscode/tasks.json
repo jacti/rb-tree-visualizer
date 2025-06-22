@@ -14,7 +14,7 @@
     {
       "label": "visualize",
       "type": "shell",
-      "command": "cd ${workspaceFolder} && make visualize",
+      "command": "cd ${workspaceFolder} && make clean && make visualize",
       "group": {
         "kind": "build",
         "isDefault": true

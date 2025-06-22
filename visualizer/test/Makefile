@@ -1,4 +1,4 @@
-.PHONY: all test clean
+.PHONY: all test visualize clean
 
 CC = gcc
 CFLAGS = -I ../src -Wall -g -DSENTINEL
@@ -6,9 +6,8 @@ CFLAGS = -I ../src -Wall -g -DSENTINEL
 SRC_DIR ?= ../src
 
 OUT_DIR ?= ../out
-BIN_DIR = $(OUT_DIR)/bin
-OBJ_DIR = $(OUT_DIR)/obj
-IMG_DIR = $(OUT_DIR)/img
+BIN_DIR := $(OUT_DIR)/bin
+OBJ_DIR := $(OUT_DIR)/obj
 
 TARGET = $(BIN_DIR)/test-rbtree
 OBJS = $(OBJ_DIR)/test-rbtree.o $(OBJ_DIR)/rbtree.o
@@ -20,7 +19,6 @@ VISUAL_OBJS = $(OBJ_DIR)/visualize-main.o $(OBJ_DIR)/rbtree_visualizer.o $(OBJ_D
 all: $(TARGET) $(VISUALIZE)
 
 visualize: $(VISUALIZE)
-	@mkdir -p $(IMG_DIR)
 	@cd $(OUT_DIR) && ./bin/$(notdir $(VISUALIZE))
 # valgrind $(visualize)
 

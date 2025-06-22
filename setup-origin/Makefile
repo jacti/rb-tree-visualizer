@@ -18,7 +18,7 @@ test: $(OUT_DIR) ## Run tests on rbtree implementation
 rebuild-test: clean $(OUT_DIR) ## Clean and rebuild test-rbtree for debugging
 	$(MAKE) -C test OUT_DIR=$(OUT_DIR) all
 
-visualize: clean $(OUT_DIR) ## Visualize RBTree -> check test/visualize-main.c
+visualize: $(OUT_DIR) ## Visualize RBTree -> check test/visualize-main.c
 	$(MAKE) -C test OUT_DIR=$(OUT_DIR) SRC_DIR=$(SRC_DIR) visualize
 
 clean: ## Clean build environment
