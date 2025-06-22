@@ -47,6 +47,6 @@ sed "${SED_INLINE[@]}" -E \
 cp -f "$VSCODE_SRC/tasks.json"  "$VSCODE_DST/tasks.json"
 
 # 2) test 파일 패치
-"$PLUGIN_ROOT/visualizer/copy-test.sh" "$DST_TEST"
+"$PLUGIN_ROOT/visualizer/copy-test.sh" "$TEST_DST"
 
 echo "✔ setup-docker complete."
