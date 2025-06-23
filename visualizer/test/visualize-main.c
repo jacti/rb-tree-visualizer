@@ -1,5 +1,7 @@
 // visualize_rbtree.c
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "rbtree_visualizer.h"
 
 /*

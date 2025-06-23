@@ -17,6 +17,9 @@
 #define NIL_TABLE_HEIGHT    80
 #define NIL_TABLE_PADDING    20
 
+/* 디렉터리 생성 (mkdir -p 동작) */
+static void ensure_dir(const char *filename);
+
 // 트리 높이 구하기
 int get_tree_height(const node_t *node, const node_t *nil) {
     if (node == nil) return 0;
